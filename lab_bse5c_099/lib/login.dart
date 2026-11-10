@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'signup.dart';
 
@@ -36,6 +37,19 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: primaryColor,
+         iconTheme: const IconThemeData(
+    color: Colors.white,
+  ),
+        title: const Text(
+          'CampusConnect',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       backgroundColor: backgroundColor,
       body: SafeArea(
         child: Center(
@@ -198,13 +212,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       TextButton(
                         onPressed: () {
-                         Navigator.push(
-                                  context,
-                       MaterialPageRoute(
-                             builder: (context) => const SignUpScreen(),
-                      ),
-                   );
-                    },
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SignUpScreen(),
+                            ),
+                          );
+                        },
                         child: const Text(
                           'Sign Up',
                           style: TextStyle(

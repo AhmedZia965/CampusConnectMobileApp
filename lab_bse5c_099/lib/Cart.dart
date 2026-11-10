@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'Checkout.dart';
 
 class CartScreen extends StatefulWidget {
   final List<Map<String, String>> cartItems;
@@ -96,6 +97,7 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+
       appBar: AppBar(
         title: const Text(
           'Shopping Cart',
@@ -108,6 +110,7 @@ class _CartScreenState extends State<CartScreen> {
         foregroundColor: const Color(0xFF203F89),
         elevation: 0,
       ),
+
       body: widget.cartItems.isEmpty
           ? const Center(
               child: Column(
@@ -145,8 +148,10 @@ class _CartScreenState extends State<CartScreen> {
                         color: Colors.white,
                         elevation: 2,
                         margin: const EdgeInsets.only(bottom: 12),
+
                         child: Padding(
                           padding: const EdgeInsets.all(12),
+
                           child: Row(
                             children: [
                               Container(
@@ -165,6 +170,7 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                 ),
                               ),
+
                               const SizedBox(width: 12),
 
                               Expanded(
@@ -179,13 +185,16 @@ class _CartScreenState extends State<CartScreen> {
                                         fontSize: 15,
                                       ),
                                     ),
+
                                     const SizedBox(height: 4),
+
                                     Text(
                                       'Rs. $price each',
                                       style: const TextStyle(
                                         color: Color(0xFF203F89),
                                       ),
                                     ),
+
                                     const SizedBox(height: 8),
 
                                     Row(
@@ -202,6 +211,7 @@ class _CartScreenState extends State<CartScreen> {
                                               const BoxConstraints(),
                                           padding: const EdgeInsets.all(4),
                                         ),
+
                                         Padding(
                                           padding:
                                               const EdgeInsets.symmetric(
@@ -214,6 +224,7 @@ class _CartScreenState extends State<CartScreen> {
                                             ),
                                           ),
                                         ),
+
                                         IconButton(
                                           onPressed: () {
                                             increaseQuantity(product);
@@ -244,6 +255,7 @@ class _CartScreenState extends State<CartScreen> {
                                       color: Color(0xFF203F89),
                                     ),
                                   ),
+
                                   IconButton(
                                     onPressed: () {
                                       removeProduct(name);
@@ -274,6 +286,7 @@ class _CartScreenState extends State<CartScreen> {
                       ),
                     ),
                   ),
+
                   child: SafeArea(
                     top: false,
                     child: Column(
@@ -289,6 +302,7 @@ class _CartScreenState extends State<CartScreen> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+
                             Text(
                               'Rs. $totalPrice',
                               style: const TextStyle(
@@ -299,7 +313,9 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                           ],
                         ),
+
                         const SizedBox(height: 15),
+
                         SizedBox(
                           width: double.infinity,
                           child: FilledButton(
@@ -313,15 +329,19 @@ class _CartScreenState extends State<CartScreen> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
+
+                            // Navigate to Checkout
                             onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'Checkout coming soon',
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CheckoutScreen(
+                                    cartItems: widget.cartItems,
                                   ),
                                 ),
                               );
                             },
+
                             child: const Text('Proceed to Checkout'),
                           ),
                         ),

@@ -63,56 +63,100 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  void createAccount() {
-    if (nameController.text.trim().isEmpty ||
-        emailController.text.trim().isEmpty ||
-        passwordController.text.isEmpty ||
-        confirmPasswordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please fill in all fields.'),
-        ),
-      );
-      return;
-    }
+ 
+void createAccount() {
+  String name = nameController.text.trim();
+  String email = emailController.text.trim();
+  String password = passwordController.text;
+  String confirmPassword = confirmPasswordController.text;
 
-    if (!emailController.text.trim().contains('@')) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter a valid email address.'),
-        ),
-      );
-      return;
-    }
-
-    if (passwordController.text.length < 6) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Password must be at least 6 characters.'),
-        ),
-      );
-      return;
-    }
-
-    if (passwordController.text != confirmPasswordController.text) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Passwords do not match.'),
-        ),
-      );
-      return;
-    }
-
+  if (name.isEmpty ||
+      email.isEmpty ||
+      password.isEmpty ||
+      confirmPassword.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Form validated successfully!'),
+        content: Text('Please fill in all fields.'),
       ),
     );
+    return;
   }
+
+  if (name.length < 3 || !RegExp(r'^[a-zA-Z ]+$').hasMatch(name)) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Name must contain at least 3 letters.'),
+      ),
+    );
+    return;
+  }
+
+  if (!RegExp(
+    r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+  ).hasMatch(email)) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Please enter a valid email address.'),
+      ),
+    );
+    return;
+  }
+
+  if (password.length < 8) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Password must be at least 8 characters.'),
+      ),
+    );
+    return;
+  }
+
+  if (!RegExp(r'[A-Z]').hasMatch(password) ||
+      !RegExp(r'[a-z]').hasMatch(password) ||
+      !RegExp(r'[0-9]').hasMatch(password) ||
+      !RegExp(r'[!@#$%^&*(),.?":{}|<>_\-]').hasMatch(password)) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'Password must contain uppercase, lowercase, number and special character.',
+        ),
+      ),
+    );
+    return;
+  }
+
+  if (password != confirmPassword) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Passwords do not match.'),
+      ),
+    );
+    return;
+  }
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(
+      content: Text('Account created successfully!'),
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+        backgroundColor: primaryColor,
+         iconTheme: const IconThemeData(
+          color: Colors.white,
+         ),
+        title: const Text(
+          'CampusConnect',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       backgroundColor: backgroundColor,
       body: SafeArea(
         child: Center(

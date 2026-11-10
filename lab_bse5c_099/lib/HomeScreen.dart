@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'login.dart';
 import 'signup.dart';
 import 'Cart.dart';
+import 'MyOrders.dart';
+import 'HelpSupport.dart';
+import 'MyProfile.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Map<String, String>> products = [
     {'name': 'Chicken Burger', 'price': 'Rs. 350', 'icon': '🍔', 'category': 'Food'},
+    {'name': 'Tea', 'price': 'Rs. 50', 'icon': '☕', 'category': 'Drinks'},
     {'name': 'Fries', 'price': 'Rs. 180', 'icon': '🍟', 'category': 'Food'},
     {'name': 'Notebook', 'price': 'Rs. 120', 'icon': '📒', 'category': 'Stationery'},
     {'name': '7up', 'price': 'Rs. 100', 'icon': '🥤', 'category': 'Drinks'},
@@ -37,7 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
     {'name': 'Hair Brush', 'price': 'Rs. 400', 'icon': '💇', 'category': 'Other'},
     {'name': 'Pizza Slice', 'price': 'Rs. 200', 'icon': '🍕', 'category': 'Food'},
     {'name': 'Chocolate Cake Slice', 'price': 'Rs. 150', 'icon': '🧁', 'category': 'Food'},
-    {'name': 'Water Bottle', 'price': 'Rs. 300', 'icon': '🧴', 'category': 'Other'},
+    {'name': 'Water Bottle', 'price': 'Rs. 300', 'icon': '🚰', 'category': 'Other'},
+    {'name': 'Sanitizer', 'price': 'Rs. 200', 'icon': '🧴', 'category': 'Other'},
     {'name': 'Highlighter Set', 'price': 'Rs. 150', 'icon': '🖍️', 'category': 'Stationery'},
     {'name': 'Stapler', 'price': 'Rs. 200', 'icon': '📎', 'category': 'Stationery'},
     {'name': 'Black Ball Pen', 'price': 'Rs. 25', 'icon': '🖊️', 'category': 'Stationery'},
@@ -46,6 +51,16 @@ class _HomeScreenState extends State<HomeScreen> {
     {'name': '50 A4 Sheets', 'price': 'Rs. 200', 'icon': '📄', 'category': 'Stationery'},
     {'name': 'Lays', 'price': 'Rs. 80', 'icon': '🥔', 'category': 'Food'},
     {'name': 'Card Holder', 'price': 'Rs. 200', 'icon': '💳', 'category': 'Other'},
+    {'name': 'Chicken Roll', 'price': 'Rs. 180', 'icon': '🌯', 'category': 'Food'},
+    {'name': 'Zinger Burger', 'price': 'Rs. 400', 'icon': '🍔', 'category': 'Food'},
+    {'name': 'Samosa', 'price': 'Rs. 40', 'icon': '🥟', 'category': 'Food'},
+    {'name': 'Shawarma', 'price': 'Rs. 250', 'icon': '🌮', 'category': 'Food'},
+    {'name': 'Chocolate Bar', 'price': 'Rs. 100', 'icon': '🍫', 'category': 'Food'},
+    {'name': 'Fresh Juice', 'price': 'Rs. 150', 'icon': '🧃', 'category': 'Drinks'},
+    {'name': 'Water', 'price': 'Rs. 50', 'icon': '💧', 'category': 'Drinks'},
+    {'name': 'Eraser', 'price': 'Rs. 20', 'icon': '🧽', 'category': 'Stationery'},
+    {'name': 'Geometry Box', 'price': 'Rs. 250', 'icon': '📐', 'category': 'Stationery'},
+    {'name': 'Umbrella', 'price': 'Rs. 500', 'icon': '☂️', 'category': 'Other'},
   ];
 
   final List<Map<String, dynamic>> categories = [
@@ -56,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   List<Map<String, String>> get filteredProducts {
-    return products.where((product) {
+    final filtered = products.where((product) {
       final matchesSearch = product['name']!
           .toLowerCase()
           .contains(searchQuery.toLowerCase());
@@ -66,6 +81,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
       return matchesSearch && matchesCategory;
     }).toList();
+
+    if (selectedCategory == 'All' && searchQuery.isEmpty) {
+      return filtered.take(10).toList();
+    }
+
+    return filtered;
   }
 
   @override
@@ -217,71 +238,88 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
 
-          PopupMenuButton<String>(
-            tooltip: 'More options',
-            icon: const Icon(
-              Icons.menu,
-              color: Color(0xFF203F89),
-              size: 27,
-            ),
-            onSelected: (value) {
-              if (value == 'home') {
-                setState(() {
-                  selectedCategory = 'All';
-                  searchQuery = '';
-                  searchController.clear();
-                });
-              } else if (value == 'orders') {
-                showMessage('My Orders coming soon');
-              } else if (value == 'favorites') {
-                showMessage('Favorites coming soon');
-              } else if (value == 'help') {
-                showMessage('Help and Support coming soon');
-              }
-            },
-            itemBuilder: (context) => const [
-              PopupMenuItem(
-                value: 'home',
-                child: Row(
-                  children: [
-                    Icon(Icons.home_outlined),
-                    SizedBox(width: 10),
-                    Text('Home'),
-                  ],
-                ),
-              ),
-              PopupMenuItem(
-                value: 'orders',
-                child: Row(
-                  children: [
-                    Icon(Icons.receipt_long_outlined),
-                    SizedBox(width: 10),
-                    Text('My Orders'),
-                  ],
-                ),
-              ),
-              PopupMenuItem(
-                value: 'favorites',
-                child: Row(
-                  children: [
-                    Icon(Icons.favorite_border),
-                    SizedBox(width: 10),
-                    Text('Favorites'),
-                  ],
-                ),
-              ),
-              PopupMenuItem(
-                value: 'help',
-                child: Row(
-                  children: [
-                    Icon(Icons.help_outline),
-                    SizedBox(width: 10),
-                    Text('Help & Support'),
-                  ],
-                ),
-              ),
-            ],
-          ),
+
+PopupMenuButton<String>(
+  tooltip: 'More options',
+  icon: const Icon(
+    Icons.menu,
+    color: Color(0xFF203F89),
+    size: 27,
+  ),
+  onSelected: (value) {
+    if (value == 'home') {
+      setState(() {
+        selectedCategory = 'All';
+        searchQuery = '';
+        searchController.clear();
+      });
+    } else if (value == 'profile') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const MyProfileScreen(),
+        ),
+      );
+    } else if (value == 'orders') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const MyOrdersScreen(),
+        ),
+      );
+    } else if (value == 'help') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HelpSupportScreen(),
+        ),
+      );
+    }
+  },
+  itemBuilder: (context) => const [
+    PopupMenuItem(
+      value: 'home',
+      child: Row(
+        children: [
+          Icon(Icons.home_outlined),
+          SizedBox(width: 10),
+          Text('Home'),
+        ],
+      ),
+    ),
+    PopupMenuItem(
+      value: 'profile',
+      child: Row(
+        children: [
+          Icon(Icons.person_outline),
+          SizedBox(width: 10),
+          Text('My Profile'),
+        ],
+      ),
+    ),
+    PopupMenuItem(
+      value: 'orders',
+      child: Row(
+        children: [
+          Icon(Icons.receipt_long_outlined),
+          SizedBox(width: 10),
+          Text('My Orders'),
+        ],
+      ),
+    ),
+    PopupMenuItem(
+      value: 'help',
+      child: Row(
+        children: [
+          Icon(Icons.help_outline),
+          SizedBox(width: 10),
+          Text('Help & Support'),
+        ],
+      ),
+    ),
+  ],
+),
+
           const SizedBox(width: 4),
         ],
       ),
